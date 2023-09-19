@@ -69,7 +69,9 @@ export default function Home() {
                 style={{ width: "32px", height: "32px" }}
               />
               <div>
-                <div style={{ fontSize: 36 }}>Login to your account</div>
+                <div style={{ fontSize: 36, color: "black" }}>
+                  Login to your account
+                </div>
                 <div style={{ fontSize: 16, color: "gray" }}>
                   access amazing images for free
                 </div>
