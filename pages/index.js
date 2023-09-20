@@ -55,6 +55,19 @@ export default function Home() {
               <h2 style={{ color: "#73114B" }}>
                 Welcome to Daniel Essien's Image Gallery
               </h2>
+              <br />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  color: "#7F265B",
+                }}
+              >
+                <div style={{ display: "block", fontSize: "12px" }}>
+                  <div>username: user@example.com</div>
+                  <div>username: 1Password</div>
+                </div>
+              </div>
             </div>
           </div>
           <div className={styles.rightDiv}>
