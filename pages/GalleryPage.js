@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Card, Input, Alert } from "antd";
+import { Card, Input, Alert, Spin } from "antd";
 import { ReactSortable } from "react-sortablejs";
 import { useRouter } from "next/router";
+import { Spincomponent } from "@/components/Spincomponent";
 import styles from "@/styles/gallery.module.css";
 import { auth } from "@/pages/api/firebase-config";
 import { SearchComponent } from "@/components/SearchComponent";
@@ -11,7 +12,7 @@ const { Meta } = Card;
 const GalleryPage = () => {
   const router = useRouter();
   const currentUser = auth.currentUser;
-  console.log(currentUser);
+  // console.log(currentUser);
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -42,50 +43,10 @@ const GalleryPage = () => {
         }, 4000);
       };
       // pushUrl();
-      console.error("You must be logged in");
+      // console.error("You must be logged in");
     }
-    console.log("User is logged in and can access gallery");
+    // console.log("User is logged in and can access gallery");
   }, [currentUser]);
-
-  const [droppedWidgets, setDroppedWidgets] = useState("");
-  const [dropped, setDropped] = useState(false);
-
-  const handleOnDrag = (e, widgetType) => {
-    e.dataTransfer.setData("widgetType", widgetType);
-
-    // Get the widget
-    // Get the widget name
-    // Get the widget index
-    // Delete or splice the widget using its index
-
-    // filter out the widgets that is being dragged
-    const result = widgets.filter((widget) => widget === widgetType);
-
-    // const isWidgetType = (element) => element === result;
-    const widgetIndex = widgets.indexOf(result[0]);
-
-    console.log("you picked: ", result, "with index: ", widgetIndex);
-
-    // set the dragged widget for onDrop function.
-
-    // What this does is, it takes out the element you dragged from the list.
-    const newArr = widgets?.splice(widgetIndex, 1);
-
-    const finalArr = widgets?.splice();
-
-    // Put it back into the list in the new position.
-
-    console.log(newArr);
-    // Removes it from the array of widgets
-    function arrayRemove(arr, value) {
-      return arr.filter(function (ele) {
-        return ele != value;
-      });
-    }
-
-    // Create a new array with the new order
-    var newArray = arrayRemove(widgets, result);
-  };
 
   return (
     <div className={styles.container}>
@@ -106,7 +67,11 @@ const GalleryPage = () => {
             {currentUser ? (
               <div>Welcome {currentUser?.email}</div>
             ) : (
-              <div>Please Log In</div>
+              <div>
+                <a style={{ color: "#7F265B" }} href="/">
+                  Click here to Log In
+                </a>
+              </div>
             )}
           </h3>
         </div>
@@ -114,32 +79,32 @@ const GalleryPage = () => {
         <SearchComponent />
         <br />
         <div className={styles.widgetcontainer}>
+          {currentUser ? null : <Spincomponent />}
           <ReactSortable list={state} setList={setState}>
-            {state.map((item) => (
-              <div className={styles.widget} key={item.id}>
-                <Card
-                  style={{
-                    width: "180px",
-                    height: "180px",
-                    marginBottom: 32,
-                  }}
-                  hoverable
-                  loading={imgLoading}
-                  cover={
-                    <img
-                      onLoad={() => setImgLoading(true)}
-                      style={{
-                        width: "180px",
-                        height: "180px",
-                      }}
-                      src={`/${item?.name}`}
-                    />
-                  }
-                >
-                  <Meta title={item?.tag} />
-                </Card>
-              </div>
-            ))}
+            {currentUser &&
+              state?.map((item) => (
+                <div className={styles.widget} key={item.id}>
+                  <Card
+                    className={styles.widgetCard}
+                    style={{
+                      width: "180px",
+                      height: "180px",
+                      marginBottom: 32,
+                    }}
+                    hoverable
+                    // loading={imgLoading}
+                    cover={
+                      <img
+                        className={styles.widgetImg}
+                        onLoad={() => setImgLoading(true)}
+                        src={`/${item?.name}`}
+                      />
+                    }
+                  >
+                    <Meta title={item?.tag} />
+                  </Card>
+                </div>
+              ))}
           </ReactSortable>
         </div>
       </div>

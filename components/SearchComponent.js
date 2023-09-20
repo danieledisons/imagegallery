@@ -35,12 +35,12 @@ export const SearchComponent = () => {
     setFilteredData(filteredResults);
     setIsEmpty(false);
     if (value.length === 0) {
-      console.log("No results");
+      // console.log("No results");
       setIsEmpty(true);
       setFilteredData(["empty"]);
     }
 
-    console.log("Filtered data: " + filteredData);
+    // console.log("Filtered data: " + filteredData);
   };
 
   //   console.log(222, searchQuery);

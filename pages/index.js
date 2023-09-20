@@ -22,15 +22,15 @@ export default function Home() {
         loginEmail,
         loginPassword
       );
-      console.log(user);
+      // console.log(user);
       setUser(user);
-      console.log("User logged in successfully");
+      // console.log("User logged in successfully");
 
       if (user) {
         router.push("/GalleryPage");
       }
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
