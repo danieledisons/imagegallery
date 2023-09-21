@@ -192,6 +192,8 @@ const GalleryPage = () => {
                       >
                         <Image
                           alt="pictures of cars and bikes"
+                          placeholder="blur"
+                          blurDataURL={`/smallpix/${item?.smallImg}`}
                           height={160}
                           width={160}
                           src={`/${item?.name}`}
