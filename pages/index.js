@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { Button, Divider, Input } from "antd";
+import { Button, Divider, Input, Alert } from "antd";
 import styles from "@/styles/Home.module.css";
 import { auth } from "@/pages/api/firebase-config";
 
@@ -11,7 +11,9 @@ export default function Home() {
   const router = useRouter();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorDesc, setErrorDesc] = useState("");
 
   const [user, setUser] = useState({});
 
@@ -22,7 +24,7 @@ export default function Home() {
         loginEmail,
         loginPassword
       );
-      // console.log(user);
+      console.log(user);
       setUser(user);
       // console.log("User logged in successfully");
 
@@ -30,7 +32,16 @@ export default function Home() {
         router.push("/GalleryPage");
       }
     } catch (error) {
-      // console.log(error.message);
+      setHasError(true);
+      if (error?.message === "Firebase: Error (auth/wrong-password).") {
+        setErrorDesc(error.message);
+        setErrorMsg("You have inserted the wrong password. Please try again");
+        console.log("You have inserted the wrong password. Please try again");
+      }
+      setErrorMsg("Username or Password was not found. Please try again");
+      setErrorDesc(error.message);
+      console.log("Username or Password was not found. Please try again");
+      console.log(error.message);
     }
   };
 
@@ -99,6 +110,17 @@ export default function Home() {
                 </div>
                 <Divider>or Sign in with Email</Divider>
               </div>
+              <div style={{ marginBottom: "8px" }}>
+                {hasError ? (
+                  <Alert
+                    message={errorMsg}
+                    description={errorDesc}
+                    type="error"
+                    closable
+                    onClose={() => setHasError(false)}
+                  />
+                ) : null}
+              </div>
               <div>
                 <Input
                   placeholder="Email"
@@ -135,7 +157,7 @@ export default function Home() {
                     marginTop: "16px",
                   }}
                 >
-                  <div>
+                  <div style={{ color: "black" }}>
                     Not Registered Yet?{" "}
                     <span style={{ color: "#7F265B" }}>
                       <a href="#">Create an account</a>

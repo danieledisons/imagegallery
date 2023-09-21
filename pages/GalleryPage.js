@@ -127,6 +127,9 @@ const GalleryPage = () => {
     // console.log("User is logged in and can access gallery");
   }, [currentUser]);
 
+  const capitalText = (string) => {
+    return string.toUpperCase();
+  };
   useEffect(() => {
     const loadAfterInterval = () => {
       if (currentUser) {
@@ -184,12 +187,7 @@ const GalleryPage = () => {
                     hoverable
                     // loading={imgLoading}
                     cover={
-                      <div
-                      // className={styles.blurLoad}
-                      // style={{
-                      //   backgroundImage: `url(smallpix/${item?.smallImg})`,
-                      // }}
-                      >
+                      <div>
                         <Image
                           alt="pictures of cars and bikes"
                           placeholder="blur"
@@ -201,7 +199,9 @@ const GalleryPage = () => {
                       </div>
                     }
                   >
-                    <Meta title={item?.tag} />
+                    <div>
+                      <Meta title={item?.tag?.toUpperCase()} />
+                    </div>
                   </Card>
                 </div>
               ))}
