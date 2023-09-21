@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Card, Alert, Spin } from "antd";
+import { Card, Alert, Spin, Input } from "antd";
 import { ReactSortable } from "react-sortablejs";
 import { useRouter } from "next/router";
 import { Spincomponent } from "@/components/Spincomponent";
@@ -10,14 +10,19 @@ import { SearchComponent } from "@/components/SearchComponent";
 import ProgressiveImage from "react-progressive-graceful-image";
 
 const { Meta } = Card;
+const { Search } = Input;
 
 const GalleryPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
   const router = useRouter();
   const currentUser = auth.currentUser;
   // console.log(currentUser);
   const [loading, setLoading] = useState(true); // turn back to true
   const [hasError, setHasError] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [searching, setSearching] = useState(false);
 
   const [imgLoading, setImgLoading] = useState(false);
   const [state, setState] = useState([
@@ -141,6 +146,298 @@ const GalleryPage = () => {
     };
     loadAfterInterval();
   }, []);
+
+  // console.log(111, searching);
+
+  const handleSearch = (event) => {
+    const value = event.target.value;
+    setSearchQuery(value);
+
+    const filteredResults = state?.filter((item) =>
+      item.tag.toLowerCase().includes(value?.toLowerCase())
+    );
+    setFilteredData(filteredResults);
+
+    if (event.target.value === "") {
+      setState([
+        {
+          id: 1,
+          name: "bandwcar1.jpg",
+          tag: "black and white car",
+          smallImg: "bandwcar1-small.jpg",
+        },
+        {
+          id: 2,
+          name: "whitecar1.jpg",
+          tag: "white car",
+          smallImg: "whitecar1-small.jpg",
+        },
+        {
+          id: 3,
+          name: "blackcar1.jpg",
+          tag: "black car",
+          smallImg: "blackcar1-small.jpg",
+        },
+        {
+          id: 4,
+          name: "graycar1.jpg",
+          tag: "gray car",
+          smallImg: "graycar1-small.jpg",
+        },
+        {
+          id: 5,
+          name: "orangecar1.jpg",
+          tag: "orange car",
+          smallImg: "orangecar1-small.jpg",
+        },
+        {
+          id: 6,
+          name: "yellowcar1.jpg",
+          tag: "yellow car",
+          smallImg: "yellowcar1-small.jpg",
+        },
+        {
+          id: 7,
+          name: "sportcar1.jpg",
+          tag: "sport car",
+          smallImg: "sportcar1-small.jpg",
+        },
+        {
+          id: 8,
+          name: "carengine1.jpg",
+          tag: "car engine",
+          smallImg: "carengine1-small.jpg",
+        },
+        {
+          id: 9,
+          name: "minicar1.jpg",
+          tag: "mini car",
+          smallImg: "minicar1-small.jpg",
+        },
+        {
+          id: 10,
+          name: "blackbike.jpg",
+          tag: "black bike",
+          smallImg: "blackbike-small.jpg",
+        },
+        {
+          id: 11,
+          name: "carseats.jpg",
+          tag: "car seats",
+          smallImg: "carseats-small.jpg",
+        },
+        {
+          id: 12,
+          name: "redbike.jpg",
+          tag: "red bike",
+          smallImg: "redbike-small.jpg",
+        },
+        {
+          id: 13,
+          name: "nicebike.jpg",
+          tag: "nice bike",
+          smallImg: "nicebike-small.jpg",
+        },
+        {
+          id: 14,
+          name: "bicycle.jpg",
+          tag: "bicycle",
+          smallImg: "bicycle-small.jpg",
+        },
+      ]);
+    }
+    // if (searching) {
+
+    // }
+    // if (value.length === 0) {
+    //   setSearching(false);
+    //   setState(filteredResults);
+    //   // console.log("No results");
+    //   // setState([
+    //   //   // {
+    //   //   //   id: 1,
+    //   //   //   name: "bandwcar1.jpg",
+    //   //   //   tag: "black and white car",
+    //   //   //   smallImg: "bandwcar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 2,
+    //   //   //   name: "whitecar1.jpg",
+    //   //   //   tag: "white car",
+    //   //   //   smallImg: "whitecar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 3,
+    //   //   //   name: "blackcar1.jpg",
+    //   //   //   tag: "black car",
+    //   //   //   smallImg: "blackcar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 4,
+    //   //   //   name: "graycar1.jpg",
+    //   //   //   tag: "gray car",
+    //   //   //   smallImg: "graycar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 5,
+    //   //   //   name: "orangecar1.jpg",
+    //   //   //   tag: "orange car",
+    //   //   //   smallImg: "orangecar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 6,
+    //   //   //   name: "yellowcar1.jpg",
+    //   //   //   tag: "yellow car",
+    //   //   //   smallImg: "yellowcar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 7,
+    //   //   //   name: "sportcar1.jpg",
+    //   //   //   tag: "sport car",
+    //   //   //   smallImg: "sportcar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 8,
+    //   //   //   name: "carengine1.jpg",
+    //   //   //   tag: "car engine",
+    //   //   //   smallImg: "carengine1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 9,
+    //   //   //   name: "minicar1.jpg",
+    //   //   //   tag: "mini car",
+    //   //   //   smallImg: "minicar1-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 10,
+    //   //   //   name: "blackbike.jpg",
+    //   //   //   tag: "black bike",
+    //   //   //   smallImg: "blackbike-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 11,
+    //   //   //   name: "carseats.jpg",
+    //   //   //   tag: "car seats",
+    //   //   //   smallImg: "carseats-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 12,
+    //   //   //   name: "redbike.jpg",
+    //   //   //   tag: "red bike",
+    //   //   //   smallImg: "redbike-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 13,
+    //   //   //   name: "nicebike.jpg",
+    //   //   //   tag: "nice bike",
+    //   //   //   smallImg: "nicebike-small.jpg",
+    //   //   // },
+    //   //   // {
+    //   //   //   id: 14,
+    //   //   //   name: "bicycle.jpg",
+    //   //   //   tag: "bicycle",
+    //   //   //   smallImg: "bicycle-small.jpg",
+    //   //   // },
+    //   // ]);
+    //   setIsEmpty(true);
+
+    // if (value?.length === 0) {
+    // setFilteredData(
+    //   {
+    //     id: 1,
+    //     name: "bandwcar1.jpg",
+    //     tag: "black and white car",
+    //     smallImg: "bandwcar1-small.jpg",
+    //   },
+    //   {
+    //     id: 2,
+    //     name: "whitecar1.jpg",
+    //     tag: "white car",
+    //     smallImg: "whitecar1-small.jpg",
+    //   },
+    //   {
+    //     id: 3,
+    //     name: "blackcar1.jpg",
+    //     tag: "black car",
+    //     smallImg: "blackcar1-small.jpg",
+    //   },
+    //   {
+    //     id: 4,
+    //     name: "graycar1.jpg",
+    //     tag: "gray car",
+    //     smallImg: "graycar1-small.jpg",
+    //   },
+    //   {
+    //     id: 5,
+    //     name: "orangecar1.jpg",
+    //     tag: "orange car",
+    //     smallImg: "orangecar1-small.jpg",
+    //   },
+    //   {
+    //     id: 6,
+    //     name: "yellowcar1.jpg",
+    //     tag: "yellow car",
+    //     smallImg: "yellowcar1-small.jpg",
+    //   },
+    //   {
+    //     id: 7,
+    //     name: "sportcar1.jpg",
+    //     tag: "sport car",
+    //     smallImg: "sportcar1-small.jpg",
+    //   },
+    //   {
+    //     id: 8,
+    //     name: "carengine1.jpg",
+    //     tag: "car engine",
+    //     smallImg: "carengine1-small.jpg",
+    //   },
+    //   {
+    //     id: 9,
+    //     name: "minicar1.jpg",
+    //     tag: "mini car",
+    //     smallImg: "minicar1-small.jpg",
+    //   },
+    //   {
+    //     id: 10,
+    //     name: "blackbike.jpg",
+    //     tag: "black bike",
+    //     smallImg: "blackbike-small.jpg",
+    //   },
+    //   {
+    //     id: 11,
+    //     name: "carseats.jpg",
+    //     tag: "car seats",
+    //     smallImg: "carseats-small.jpg",
+    //   },
+    //   {
+    //     id: 12,
+    //     name: "redbike.jpg",
+    //     tag: "red bike",
+    //     smallImg: "redbike-small.jpg",
+    //   },
+    //   {
+    //     id: 13,
+    //     name: "nicebike.jpg",
+    //     tag: "nice bike",
+    //     smallImg: "nicebike-small.jpg",
+    //   },
+    //   {
+    //     id: 14,
+    //     name: "bicycle.jpg",
+    //     tag: "bicycle",
+    //     smallImg: "bicycle-small.jpg",
+    //   }
+    // );
+    //   console.log("less than zero");
+    // }
+  };
+
+  console.log(222, filteredData);
+
+  const handleClick = (event) => {
+    setState(filteredData);
+  };
+
   return (
     <div className={styles.container}>
       {hasError ? (
@@ -169,7 +466,16 @@ const GalleryPage = () => {
           </h3>
         </div>
         <br />
-        <SearchComponent />
+        <Search
+          value={searchQuery}
+          onChange={handleSearch}
+          size="large"
+          placeholder="Search for Images..."
+          allowClear
+          onSearch={handleClick}
+        />
+        {/* <SearchComponent /> */}
+        <br />
         <br />
         <div className={styles.widgetcontainer}>
           {currentUser ? null : <Spincomponent />}
