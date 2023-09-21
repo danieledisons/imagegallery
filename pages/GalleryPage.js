@@ -13,7 +13,7 @@ const GalleryPage = () => {
   const router = useRouter();
   const currentUser = auth.currentUser;
   // console.log(currentUser);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [imgLoading, setImgLoading] = useState(false);
@@ -47,6 +47,18 @@ const GalleryPage = () => {
     }
     // console.log("User is logged in and can access gallery");
   }, [currentUser]);
+
+  useEffect(() => {
+    const loadAfterInterval = () => {
+      if (currentUser) {
+        setInterval(() => {
+          setLoading(false);
+        }, 2000);
+      }
+      // setLoading(false);
+    };
+    loadAfterInterval();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -94,11 +106,23 @@ const GalleryPage = () => {
                     hoverable
                     // loading={imgLoading}
                     cover={
-                      <img
-                        className={styles.widgetImg}
-                        onLoad={() => setImgLoading(true)}
-                        src={`/${item?.name}`}
-                      />
+                      loading ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Spin />
+                        </div>
+                      ) : (
+                        <img
+                          className={styles.widgetImg}
+                          onLoad={() => setLoading(false)}
+                          src={`/${item?.name}`}
+                        />
+                      )
                     }
                   >
                     <Meta title={item?.tag} />
