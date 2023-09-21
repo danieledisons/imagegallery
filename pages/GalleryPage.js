@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Card, Input, Alert, Spin } from "antd";
+import Image from "next/image";
+import { Card, Alert, Spin } from "antd";
 import { ReactSortable } from "react-sortablejs";
 import { useRouter } from "next/router";
 import { Spincomponent } from "@/components/Spincomponent";
 import styles from "@/styles/gallery.module.css";
 import { auth } from "@/pages/api/firebase-config";
 import { SearchComponent } from "@/components/SearchComponent";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 const { Meta } = Card;
 
@@ -13,26 +15,103 @@ const GalleryPage = () => {
   const router = useRouter();
   const currentUser = auth.currentUser;
   // console.log(currentUser);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // turn back to true
   const [hasError, setHasError] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+
   const [imgLoading, setImgLoading] = useState(false);
   const [state, setState] = useState([
-    { id: 1, name: "bandwcar1.jpg", tag: "black and white car" },
-    { id: 2, name: "whitecar1.jpg", tag: "white car" },
-    { id: 3, name: "blackcar1.jpg", tag: "black car" },
-    { id: 4, name: "graycar1.jpg", tag: "gray car" },
-    { id: 5, name: "orangecar1.jpg", tag: "orange car" },
-    { id: 6, name: "yellowcar1.jpg", tag: "yellow car" },
-    { id: 7, name: "sportcar1.jpg", tag: "sport car" },
-    { id: 8, name: "carengine1.jpg", tag: "car engine" },
-    { id: 9, name: "minicar1.jpg", tag: "mini car" },
-    { id: 10, name: "blackbike.jpg", tag: "black bike" },
-    { id: 11, name: "carseats.jpg", tag: "car seats" },
-    { id: 12, name: "redbike.jpg", tag: "red bike" },
-    { id: 13, name: "nicebike.jpg", tag: "nice bike" },
-    { id: 14, name: "bicycle.jpg", tag: "bicycle" },
+    {
+      id: 1,
+      name: "bandwcar1.jpg",
+      tag: "black and white car",
+      smallImg: "bandwcar1-small.jpg",
+    },
+    {
+      id: 2,
+      name: "whitecar1.jpg",
+      tag: "white car",
+      smallImg: "whitecar1-small.jpg",
+    },
+    {
+      id: 3,
+      name: "blackcar1.jpg",
+      tag: "black car",
+      smallImg: "blackcar1-small.jpg",
+    },
+    {
+      id: 4,
+      name: "graycar1.jpg",
+      tag: "gray car",
+      smallImg: "graycar1-small.jpg",
+    },
+    {
+      id: 5,
+      name: "orangecar1.jpg",
+      tag: "orange car",
+      smallImg: "orangecar1-small.jpg",
+    },
+    {
+      id: 6,
+      name: "yellowcar1.jpg",
+      tag: "yellow car",
+      smallImg: "yellowcar1-small.jpg",
+    },
+    {
+      id: 7,
+      name: "sportcar1.jpg",
+      tag: "sport car",
+      smallImg: "sportcar1-small.jpg",
+    },
+    {
+      id: 8,
+      name: "carengine1.jpg",
+      tag: "car engine",
+      smallImg: "carengine1-small.jpg",
+    },
+    {
+      id: 9,
+      name: "minicar1.jpg",
+      tag: "mini car",
+      smallImg: "minicar1-small.jpg",
+    },
+    {
+      id: 10,
+      name: "blackbike.jpg",
+      tag: "black bike",
+      smallImg: "blackbike-small.jpg",
+    },
+    {
+      id: 11,
+      name: "carseats.jpg",
+      tag: "car seats",
+      smallImg: "carseats-small.jpg",
+    },
+    {
+      id: 12,
+      name: "redbike.jpg",
+      tag: "red bike",
+      smallImg: "redbike-small.jpg",
+    },
+    {
+      id: 13,
+      name: "nicebike.jpg",
+      tag: "nice bike",
+      smallImg: "nicebike-small.jpg",
+    },
+    {
+      id: 14,
+      name: "bicycle.jpg",
+      tag: "bicycle",
+      smallImg: "bicycle-small.jpg",
+    },
   ]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push("/");
+    }
+  }, []);
 
   useEffect(() => {
     if (!currentUser && currentUser === null) {
@@ -59,7 +138,6 @@ const GalleryPage = () => {
     };
     loadAfterInterval();
   }, []);
-
   return (
     <div className={styles.container}>
       {hasError ? (
@@ -106,23 +184,19 @@ const GalleryPage = () => {
                     hoverable
                     // loading={imgLoading}
                     cover={
-                      loading ? (
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Spin />
-                        </div>
-                      ) : (
-                        <img
-                          className={styles.widgetImg}
-                          onLoad={() => setLoading(false)}
+                      <div
+                      // className={styles.blurLoad}
+                      // style={{
+                      //   backgroundImage: `url(smallpix/${item?.smallImg})`,
+                      // }}
+                      >
+                        <Image
+                          alt="pictures of cars and bikes"
+                          height={160}
+                          width={160}
                           src={`/${item?.name}`}
                         />
-                      )
+                      </div>
                     }
                   >
                     <Meta title={item?.tag} />
