@@ -432,7 +432,7 @@ const GalleryPage = () => {
     // }
   };
 
-  console.log(222, filteredData);
+  // console.log(222, filteredData);
 
   const handleClick = (event) => {
     setState(filteredData);
